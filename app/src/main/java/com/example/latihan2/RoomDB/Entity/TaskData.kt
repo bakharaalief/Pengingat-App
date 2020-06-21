@@ -16,5 +16,5 @@ data class TaskData(
     @ColumnInfo(name = "category_task")
     val categoryTask : String?,
     @ColumnInfo(name = "date_task")
-    val dateTask : Date? = null
+    val dateTask : Date?
 )
