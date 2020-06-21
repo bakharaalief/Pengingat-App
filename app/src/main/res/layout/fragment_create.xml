@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".Create.CreateFragment">
+
+    <!--buat judul kegiatan-->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/title_task_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColorHint="@android:color/black"
+        app:startIconDrawable="@drawable/ic_short_text_black_24dp"
+        app:counterEnabled="true"
+        app:counterMaxLength="20"
+        android:hint="Kegiatan">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+<!--    <Space-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="10dp" />-->
+
+    <!--buat detail kegiatan-->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/detail_task_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColorHint="@android:color/black"
+        app:startIconDrawable="@drawable/ic_baseline_notes_24"
+        app:counterEnabled="true"
+        app:counterMaxLength="100"
+        android:hint="Detail">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+<!--    <Space-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="10dp" />-->
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/category_task_input"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        app:startIconDrawable="@drawable/ic_label_black_24dp"
+        android:hint="Kategori"
+        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu">
+
+        <AutoCompleteTextView
+            android:id="@+id/category_task_item_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="none"
+            />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:padding="5dp">
+
+        <Button
+            android:id="@+id/add_task"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tambahkan"
+            android:textSize="15dp"/>
+
+    </LinearLayout>
+
+
+
+
+
+</LinearLayout>
