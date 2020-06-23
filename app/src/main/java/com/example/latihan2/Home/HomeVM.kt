@@ -1,36 +1,30 @@
-package com.example.latihan2.Create
+package com.example.latihan2.Home
 
 import android.app.Application
-import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import com.example.latihan2.RoomDB.AppDB
 import com.example.latihan2.RoomDB.Entity.TaskData
 import com.example.latihan2.RoomDB.Repository.TaskRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.util.*
 
-class CreateVM(application: Application) : AndroidViewModel(application) {
+class HomeVM(application: Application) : AndroidViewModel(application){
 
+    val listTask : LiveData<List<TaskData>>
     private val repository : TaskRepository
+    private val db : AppDB?
 
-    var db : AppDB?
-
-    init{
+    init {
         db = AppDB.getDB(application)
         val taskDao = db!!.taskDao()
         repository = TaskRepository(taskDao)
+        listTask = repository.allTask
     }
 
-    fun insertData(title : String, detail : String, category : String) = viewModelScope.launch(Dispatchers.IO){
-
-        val data = TaskData(titleTask = title, detailTask = detail, categoryTask = category, dateTask = Date())
-        repository.insertTask(data)
-
-        Log.i("wadaw", "Data berhasil ditambah")
+    fun deleteTask(taskData: TaskData) = viewModelScope.launch(Dispatchers.IO){
+        repository.deleteTask(taskData)
     }
-
-
-
 }

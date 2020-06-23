@@ -11,18 +11,15 @@ import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
 import com.example.latihan2.R
-import com.example.latihan2.TaskData.TaskInput
 import kotlinx.android.synthetic.main.fragment_create.*
 
 
 class CreateFragment : Fragment() {
 
-    private lateinit var viewModel: CreateViewModel
-    private lateinit var viewModel2 : CreateVM
+    private lateinit var viewModel : CreateVM
     private lateinit var titleInput : String
     private lateinit var detailInput : String
     private lateinit var categoryInput: String
-    private lateinit var data : TaskInput
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,43 +40,26 @@ class CreateFragment : Fragment() {
             R.layout.list_item, items)
         (category_task_input.editText as? AutoCompleteTextView)?.setAdapter(adapter)
 
-        //view model
-        //viewModel = ViewModelProvider(this).get(CreateViewModel::class.java)
+        viewModel = ViewModelProvider(this).get(CreateVM::class.java)
 
-        viewModel2 = ViewModelProvider(this).get(CreateVM::class.java)
-
-        //click tambahkan
-        add_task.setOnClickListener { view ->
+        //click  tambahkan
+        add_task.setOnClickListener {
 
             //new Data from edit text
             titleInput = title_task_input.editText!!.text.toString()
             detailInput = detail_task_input.editText!!.text.toString()
             categoryInput = ( category_task_input.editText as? AutoCompleteTextView)!!.text.toString()
 
-//            viewModel.inputData(titleInput, detailInput, categoryInput)
-//
-//            data = viewModel.taskInput.value!!
-
-            viewModel2.insertData(titleInput,detailInput,categoryInput)
-
-
+            viewModel.insertData(titleInput,detailInput,categoryInput)
 
             /*for navigation*/
-//            val action =
-//                CreateFragmentDirections.actionCreateFragmentToHomeFragment(
-//                    data
-//                )
-////                CreateFragmentDirections.actionCreateFragmentToHomeFragment()
-//            NavHostFragment.findNavController(this).navigate(action)
+            val action = CreateFragmentDirections.actionCreateFragmentToHomeFragment()
+            NavHostFragment.findNavController(this).navigate(action)
 
             //Toast data to muncul
             Toast.makeText(context, "Data berhasil dibuat", Toast.LENGTH_SHORT).show()
         }
 
     }
-
-//    private fun insertTask(){
-//        class
-//    }
 
 }

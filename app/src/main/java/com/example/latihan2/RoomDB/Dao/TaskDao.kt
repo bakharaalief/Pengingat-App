@@ -1,5 +1,6 @@
 package com.example.latihan2.RoomDB.Dao
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
 import androidx.room.Dao
 import com.example.latihan2.RoomDB.Entity.TaskData
@@ -8,7 +9,7 @@ import com.example.latihan2.RoomDB.Entity.TaskData
 interface TaskDao {
 
     @Query("SELECT * From taskdata")
-    fun getAll(): List<TaskData>
+    fun getAll(): LiveData<List<TaskData>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(taskData: TaskData)

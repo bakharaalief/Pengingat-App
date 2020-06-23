@@ -5,23 +5,19 @@ import android.util.Log
 import android.view.*
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.navArgs
 import androidx.navigation.ui.NavigationUI
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.latihan2.*
-import com.example.latihan2.TaskData.Task
 import kotlinx.android.synthetic.main.fragment_home.*
-import kotlin.collections.ArrayList
 
 class HomeFragment : Fragment() {
 
-    private lateinit var viewModelFactory: HomeViewModelFactory
-    private lateinit var viewModel: HomeViewModel
-    private var listTask: ArrayList<Task> = ArrayList()
-    private val args : HomeFragmentArgs by navArgs()
-    private var id: Long = 0
+    private lateinit var viewModel : HomeVM
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,23 +33,12 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        viewModel = ViewModelProvider(this).get(HomeVM::class.java)
 
-        val data = if (args.taskData == null) null else args.taskData!!
-//        val data = null
-//        Log.i("wadaw", "${data}")
+        /*recylerview trigger*/
+        viewModel.listTask.observe(viewLifecycleOwner, Observer { newTask ->
 
-        viewModelFactory = HomeViewModelFactory(data)
-        viewModel = ViewModelProvider(this, viewModelFactory).get(HomeViewModel::class.java)
-
-//        viewModel = ViewModelProvider(this, viewModelFactory).get(HomeViewModel::class.java)
-//        Log.i("wadaw", "${data}")
-
-        /*mentriger secara langsung jika terdapat perubahan pada viewmodel*/
-        viewModel.listTask.observe(viewLifecycleOwner, androidx.lifecycle.Observer { newTask ->
-
-            listTask = newTask
-
-            if(listTask.size == 0){
+            if(newTask.size == 0){
 
                 list_task.visibility = View.GONE
                 empty_task.visibility = View.VISIBLE
@@ -66,21 +51,16 @@ class HomeFragment : Fragment() {
                 empty_task.visibility = View.GONE
                 list_task.visibility = View.VISIBLE
 
-                val adapter = TaskAdapter(listTask)
+                //val divider = DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL)
+                val adapter = TaskAdapter(newTask, viewModel)
                 list_task.layoutManager = LinearLayoutManager(requireContext())
+                //list_task.addItemDecoration(divider)
                 list_task.adapter = adapter
 
 
             }
 
         })
-
-        if(listTask.size == 0){
-
-            list_task.visibility = View.GONE
-            empty_task.visibility = View.VISIBLE
-
-        }
 
     }
 
