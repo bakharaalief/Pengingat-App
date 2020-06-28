@@ -7,9 +7,10 @@
     android:layout_height="wrap_content">
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/card_task"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/colorPrimary"
+        app:cardBackgroundColor="@color/colorPrimary"
         app:cardCornerRadius="5dp">
 
         <LinearLayout
@@ -22,29 +23,43 @@
                 android:id="@+id/title_task"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="40dp"
-                android:text="Joging Pagi" />
+                android:fontFamily="@font/roboto_bold"
+                android:textColor="@android:color/white"
+                android:text="Joging Pagi"
+                android:textSize="40dp" />
 
             <TextView
                 android:id="@+id/detail_task"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="18dp"
-                android:text="Joging keliling komplek Bareng teman teman"/>
+                android:fontFamily="@font/roboto"
+                android:text="Joging keliling komplek Bareng teman teman"
+                android:textSize="18dp" />
 
             <TextView
                 android:id="@+id/category_task"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="18dp"
+                android:fontFamily="@font/roboto_bold"
+                android:textSize="20dp"
                 android:text="Olahraga"/>
+
+            <TextView
+                android:id="@+id/reminder_task"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto"
+                android:textColor="@android:color/white"
+                android:textSize="13dp"
+                android:text="Sun, 20 Oktober 2020 "/>
 
             <TextView
                 android:id="@+id/date_task"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="15dp"
-                android:text="Minggu, 29 Oktober 2020 "/>
+                android:fontFamily="@font/roboto"
+                android:textSize="13dp"
+                android:text="20s"/>
 
             <LinearLayout
                 android:layout_width="match_parent"

@@ -23,12 +23,10 @@ class CreateVM(application: Application) : AndroidViewModel(application) {
         repository = TaskRepository(taskDao)
     }
 
-    fun insertData(title : String, detail : String, category : String) = viewModelScope.launch(Dispatchers.IO){
-
-        val data = TaskData(titleTask = title, detailTask = detail, categoryTask = category, dateTask = Date())
+    fun insertData(title : String, detail : String, category : String, color : Int, setReminder : Boolean, dateReminder : Date) = viewModelScope.launch(Dispatchers.IO){
+        Log.i("wadaw", "${color}")
+        val data = TaskData(titleTask = title, detailTask = detail, categoryTask = category, colorTask = color, reminderSet = setReminder, reminderTask = dateReminder ,dateTask = Date())
         repository.insertTask(data)
-
-        Log.i("wadaw", "Data berhasil ditambah")
     }
 
 

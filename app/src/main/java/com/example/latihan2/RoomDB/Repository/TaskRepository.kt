@@ -1,6 +1,8 @@
 package com.example.latihan2.RoomDB.Repository
 
+import android.util.Log
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.example.latihan2.RoomDB.Dao.TaskDao
 import com.example.latihan2.RoomDB.Entity.TaskData
 
@@ -15,6 +17,5 @@ class TaskRepository (private val taskDao: TaskDao){
     suspend fun deleteTask(taskData: TaskData){
         taskDao.delete(taskData)
     }
-
 
 }

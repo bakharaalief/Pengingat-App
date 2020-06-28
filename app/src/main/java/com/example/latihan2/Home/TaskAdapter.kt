@@ -1,25 +1,33 @@
 package com.example.latihan2.Home
 
+import android.content.Context
 import android.graphics.Paint
+import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.annotation.RequiresApi
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.latihan2.R
 import com.example.latihan2.RoomDB.Entity.TaskData
 import kotlinx.android.synthetic.main.item_task.view.*
+import java.text.SimpleDateFormat
+import java.util.*
+import java.util.concurrent.TimeUnit
 
-class TaskAdapter(val taskList: List<TaskData>, val viewModel: HomeVM) : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
+class TaskAdapter(val taskList: List<TaskData>, val viewModel: HomeVM, val context: Context) : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
 
 
 
     class TaskViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
+        val colorTask = itemView.card_task
         val titleTask = itemView.title_task
         val detailTask = itemView.detail_task
         val categoryTask = itemView.category_task
         val dateTask = itemView.date_task
+        val reminderTask = itemView.reminder_task
         val deleteButton = itemView.delete_task
         val completeButton = itemView.comple_task
 
@@ -36,11 +44,17 @@ class TaskAdapter(val taskList: List<TaskData>, val viewModel: HomeVM) : Recycle
     }
 
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
+        val data = taskList[position]
 
-        holder.titleTask.setText(taskList[position].titleTask)
-        holder.detailTask.setText(taskList[position].detailTask)
-        holder.categoryTask.setText(taskList[position].categoryTask)
-        holder.dateTask.setText(taskList[position].dateTask.toString())
+        holder.colorTask.setCardBackgroundColor(
+            ContextCompat.getColor(context, colorTask(data.colorTask!!))
+        )
+        holder.titleTask.setText(data.titleTask)
+        holder.detailTask.setText(data.detailTask)
+        holder.categoryTask.setText(data.categoryTask)
+        holder.reminderTask.visibility = reminderView(data.reminderSet!!)
+        holder.reminderTask.setText(reminderTime(data.reminderTask!!))
+        holder.dateTask.setText(dateFormat(data.dateTask!!.time))
         holder.deleteButton.setOnClickListener {
             viewModel.deleteTask(taskList[position])
         }
@@ -74,6 +88,63 @@ class TaskAdapter(val taskList: List<TaskData>, val viewModel: HomeVM) : Recycle
             }
         }
 
+    }
+
+    private fun dateFormat(dateInput: Long) : String {
+        var dateOut = "null"
+        val dateNow = Date().time
+        val dateDiffer = dateNow - dateInput
+
+        val second = TimeUnit.MILLISECONDS.toSeconds(dateDiffer)
+        val minute = TimeUnit.MILLISECONDS.toMinutes(dateDiffer)
+        val hour = TimeUnit.MILLISECONDS.toHours(dateDiffer)
+        val day = TimeUnit.MILLISECONDS.toDays(dateDiffer)
+
+        if(second < 60){
+            dateOut = "${second}s ago"
+        }
+        else if(second > 60 && minute < 60){
+            dateOut= "${minute}m ago"
+        }
+        else if(minute > 60 && hour <= 24){
+            dateOut= "${hour}h ago"
+        }
+        else if(hour > 24 && day <= 7){
+            dateOut= "${day}d ago"
+        }
+        else{
+            val format = SimpleDateFormat("dd/MM/yy")
+            dateOut = format.format(dateInput).toString()
+        }
+
+        return dateOut
+    }
+
+    private fun colorTask(colorInput : Int) : Int {
+        var data : Int = R.color.colorPrimary
+
+        when(colorInput){
+            1 -> data = android.R.color.holo_red_dark
+
+        }
+
+        return data
+    }
+
+    private fun reminderView(reminderSet : Boolean) : Int {
+        var view = View.GONE
+
+        if(reminderSet){
+            view = View.VISIBLE
+        }
+
+        return view
+    }
+
+    private fun reminderTime(reminderInput : Date) : String {
+        val format = SimpleDateFormat("EEE, dd/MM/yy")
+        val date = format.format(reminderInput)
+        return date.toString()
     }
 
 }
