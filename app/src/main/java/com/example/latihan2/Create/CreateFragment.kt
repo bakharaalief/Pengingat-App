@@ -12,10 +12,12 @@ import android.widget.Button
 import android.widget.Toast
 import androidx.core.view.forEach
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import com.example.latihan2.R
 import com.google.android.material.datepicker.MaterialDatePicker
 import kotlinx.android.synthetic.main.fragment_create.*
+import kotlinx.android.synthetic.main.item_task.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -79,7 +81,7 @@ class CreateFragment : Fragment() {
         }
 
         //click  tambahkan
-        add_task.setOnClickListener {
+        add_task.setOnClickListener { v ->
 
             //new Data from edit text
             titleInput = title_task_input.editText!!.text.toString().capitalize()
@@ -96,7 +98,7 @@ class CreateFragment : Fragment() {
 
             /*for navigation*/
             val action = CreateFragmentDirections.actionCreateFragmentToHomeFragment()
-            NavHostFragment.findNavController(this).navigate(action)
+            v.findNavController().navigate(action)
 
             //Toast data to muncul
             Toast.makeText(context, "Data berhasil dibuat", Toast.LENGTH_SHORT).show()
@@ -109,6 +111,10 @@ class CreateFragment : Fragment() {
             materialDatePicker.show(parentFragmentManager, materialDatePicker.toString())
         }
 
+        edit_reminder_task_input.setOnClickListener {
+            materialDatePicker.show(parentFragmentManager, materialDatePicker.toString())
+        }
+
         materialDatePicker.addOnPositiveButtonClickListener{ selection ->
             dateReminderInput = Date(selection) //change long typdata to date
             Toast.makeText(context, "${dateReminderInput}", Toast.LENGTH_SHORT).show()
@@ -117,17 +123,19 @@ class CreateFragment : Fragment() {
             val dateFormat = format.format(dateReminderInput)
 
             setReminder = true
+            reminder_task_input.visibility = View.GONE
+            edit_reminder_task_input.visibility = View.VISIBLE
             reminder_task_input_2.visibility = View.VISIBLE
             reminder_task_input_2.setText(dateFormat)
             close_reminder_task_input.visibility = View.VISIBLE
-            reminder_task_input.setText("Edit")
         }
 
         close_reminder_task_input.setOnClickListener {
             setReminder = false
             reminder_task_input_2.visibility = View.GONE
             close_reminder_task_input.visibility = View.GONE
-            reminder_task_input.setText("Set Reminder")
+            reminder_task_input.visibility = View.VISIBLE
+            edit_reminder_task_input.visibility = View.GONE
         }
     }
 

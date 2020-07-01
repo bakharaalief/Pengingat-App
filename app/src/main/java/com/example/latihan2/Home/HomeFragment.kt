@@ -2,8 +2,10 @@ package com.example.latihan2.Home
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.transition.TransitionManager
 import android.util.Log
 import android.view.*
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -14,6 +16,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.latihan2.*
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipDrawable
 import kotlinx.android.synthetic.main.category_item.*
@@ -84,6 +87,7 @@ class HomeFragment : Fragment() {
                 }
 
             })
+
         })
 
     }
@@ -99,7 +103,6 @@ class HomeFragment : Fragment() {
 
             //if button click
             R.id.createFragment -> {
-                //Toast.makeText(context, "wadawwwww", Toast.LENGTH_SHORT).show()
                 true
             }
 
@@ -110,5 +113,7 @@ class HomeFragment : Fragment() {
         return NavigationUI.onNavDestinationSelected(item!!, view!!.findNavController()) ||
                 super.onOptionsItemSelected(item)
     }
+
+
 
 }

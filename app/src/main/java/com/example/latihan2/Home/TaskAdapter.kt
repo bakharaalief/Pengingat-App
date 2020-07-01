@@ -2,12 +2,13 @@ package com.example.latihan2.Home
 
 import android.content.Context
 import android.graphics.Paint
-import android.os.Build
+import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.RequiresApi
+import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.latihan2.R
 import com.example.latihan2.RoomDB.Entity.TaskData
@@ -18,11 +19,10 @@ import java.util.concurrent.TimeUnit
 
 class TaskAdapter(val taskList: List<TaskData>, val viewModel: HomeVM, val context: Context) : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
 
-
-
     class TaskViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        val colorTask = itemView.card_task
+        val cardTask = itemView.card_task
+        val iconTask = itemView.icon_task
         val titleTask = itemView.title_task
         val detailTask = itemView.detail_task
         val categoryTask = itemView.category_task
@@ -30,6 +30,7 @@ class TaskAdapter(val taskList: List<TaskData>, val viewModel: HomeVM, val conte
         val reminderTask = itemView.reminder_task
         val deleteButton = itemView.delete_task
         val completeButton = itemView.comple_task
+        val uncompleteButton = itemView.uncomple_task
 
     }
 
@@ -46,9 +47,15 @@ class TaskAdapter(val taskList: List<TaskData>, val viewModel: HomeVM, val conte
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
         val data = taskList[position]
 
-        holder.colorTask.setCardBackgroundColor(
+        holder.cardTask.setCardBackgroundColor(
             ContextCompat.getColor(context, colorTask(data.colorTask!!))
         )
+        holder.cardTask.setOnClickListener{ v ->
+            val action = HomeFragmentDirections.actionHomeFragmentToDetailFragment(data)
+            v.findNavController().navigate(action)
+
+        }
+        holder.iconTask.setImageResource(iconView(data.categoryTask!!))
         holder.titleTask.setText(data.titleTask)
         holder.detailTask.setText(data.detailTask)
         holder.categoryTask.setText(data.categoryTask)
@@ -56,38 +63,46 @@ class TaskAdapter(val taskList: List<TaskData>, val viewModel: HomeVM, val conte
         holder.reminderTask.setText(reminderTime(data.reminderTask!!))
         holder.dateTask.setText(dateFormat(data.dateTask!!.time))
         holder.deleteButton.setOnClickListener {
-            viewModel.deleteTask(taskList[position])
+            viewModel.deleteTask(data)
         }
+
+        /*complete button*/
+        holder.completeButton.visibility =
+            if(data.completeTask!!) View.GONE else View.VISIBLE
         holder.completeButton.setOnClickListener {
-            completeTask(holder)
+            completeTask(viewModel, data)
         }
+
+        /*uncomplete button*/
+        holder.uncompleteButton.visibility = if(data.completeTask) View.VISIBLE else View.GONE
+        holder.uncompleteButton.setOnClickListener {
+            uncompleteTask(viewModel, data)
+        }
+
+        /*striketrough line when task complete*/
+        holder.titleTask.paintFlags =
+            if(data.completeTask) holder.titleTask.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+            else holder.titleTask.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
+        holder.detailTask.paintFlags =
+            if(data.completeTask) holder.titleTask.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+            else holder.titleTask.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
+        holder.categoryTask.paintFlags =
+            if(data.completeTask) holder.titleTask.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+            else holder.titleTask.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
+
+
+
 
     }
 
-    private fun completeTask(holder: TaskViewHolder){
-
-        when(holder.completeButton.text){
-            "complete" -> {
-
-                holder.titleTask.paintFlags = holder.titleTask.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
-                holder.detailTask.paintFlags = holder.detailTask.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
-                holder.categoryTask.paintFlags = holder.categoryTask.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
-                holder.dateTask.paintFlags = holder.dateTask.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
-                holder.completeButton.text = "uncomplete"
-            }
 
 
-            "uncomplete" -> {
+    private fun completeTask(viewModel: HomeVM, taskData: TaskData){
+        viewModel.updateTaskComplete(taskData.id_task!!, true)
+    }
 
-                holder.titleTask.paintFlags = holder.titleTask.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
-                holder.detailTask.paintFlags = holder.detailTask.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
-                holder.categoryTask.paintFlags = holder.categoryTask.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
-                holder.dateTask.paintFlags = holder.dateTask.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
-                holder.completeButton.text = "complete"
-
-            }
-        }
-
+    private fun uncompleteTask(viewModel: HomeVM, taskData: TaskData){
+        viewModel.updateTaskComplete(taskData.id_task!!, false)
     }
 
     private fun dateFormat(dateInput: Long) : String {
@@ -124,8 +139,9 @@ class TaskAdapter(val taskList: List<TaskData>, val viewModel: HomeVM, val conte
         var data : Int = R.color.colorPrimary
 
         when(colorInput){
-            1 -> data = android.R.color.holo_red_dark
-
+            1 -> data = R.color.color1
+            2 -> data = R.color.color2
+            3 -> data = R.color.color3
         }
 
         return data
@@ -147,4 +163,15 @@ class TaskAdapter(val taskList: List<TaskData>, val viewModel: HomeVM, val conte
         return date.toString()
     }
 
+    private fun iconView(categoryInput : String) : Int{
+        var icon = 0
+
+        when(categoryInput){
+            "Pekerjaan" -> icon = R.drawable.ic_work
+            "Liburan" -> icon = R.drawable.ic_popcorn
+            "Olahraga" -> icon = R.drawable.ic_fitness_center_black_24dp
+        }
+
+        return icon
+    }
 }

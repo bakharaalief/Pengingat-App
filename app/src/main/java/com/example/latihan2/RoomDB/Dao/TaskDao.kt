@@ -17,8 +17,8 @@ interface TaskDao {
     @Update
     fun update(taskData: TaskData)
 
-//    @Query("SELECT * FROM taskdata WHERE id_task == (:id)")
-//    fun updateData(id: Long, taskData: TaskData)
+    @Query("UPDATE taskdata SET complete_task= :complete WHERE id_task= :id ")
+    fun updateComplete(id : Long, complete:Boolean)
 
     @Delete
     fun delete(taskData: TaskData)

@@ -43,6 +43,10 @@ class HomeVM(application: Application) : AndroidViewModel(application){
 
     }
 
+    fun updateTaskComplete(id : Long, complete: Boolean) = viewModelScope.launch(Dispatchers.IO){
+        repository.updateComplate(id, complete)
+    }
+
     /*masih bug*/
 //    fun categoryTask(listTask2 : List<TaskData>){
 //        _listCategory.value!!.clear()

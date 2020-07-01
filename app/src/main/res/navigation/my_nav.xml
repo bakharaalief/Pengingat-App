@@ -10,16 +10,35 @@
         android:label="Pengingat"
         tools:layout="@layout/fragment_home">
         <action
+            android:id="@+id/action_homeFragment_to_detailFragment"
+            app:destination="@id/detailFragment"
+            app:enterAnim="@anim/slide_in_right" />
+        <action
             android:id="@+id/action_homeFragment_to_createFragment"
             app:destination="@id/createFragment" />
     </fragment>
     <fragment
         android:id="@+id/createFragment"
         android:name="com.example.latihan2.Create.CreateFragment"
-        android:label="Create Note"
-        tools:layout="@layout/fragment_create" >
+        android:label="Create Task"
+        tools:layout="@layout/fragment_create">
         <action
             android:id="@+id/action_createFragment_to_homeFragment"
-            app:destination="@id/homeFragment" />
+            app:destination="@id/homeFragment"
+            app:enterAnim="@anim/slide_in_left" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailFragment"
+        android:name="com.example.latihan2.Detail.DetailFragment"
+        android:label="Detail Task"
+        tools:layout="@layout/fragment_detail">
+        <action
+            android:id="@+id/action_detailFragment_to_homeFragment3"
+            app:destination="@id/homeFragment"
+            app:enterAnim="@anim/slide_in_left" />
+        <argument
+            android:name="taskData"
+            app:argType="com.example.latihan2.RoomDB.Entity.TaskData"
+            app:nullable="true" />
     </fragment>
 </navigation>

@@ -68,43 +68,9 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="10dp" />
-
-    <com.google.android.material.button.MaterialButtonToggleGroup
-        android:id="@+id/color_task_group"
+    <Space
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:singleSelection="true">
-        
-        <Button
-            android:id="@+id/color_task_input1"
-            android:text="warna1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/circe_button"
-            android:backgroundTint="@android:color/holo_red_dark"
-            style="?attr/materialButtonOutlinedStyle"/>
-
-        <Button
-            android:id="@+id/color_task_input2"
-            android:text="warna2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@android:color/holo_green_dark"
-            style="?attr/materialButtonOutlinedStyle"/>
-
-        <Button
-            android:id="@+id/color_task_input3"
-            android:text="warna3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/colorPrimary"
-            style="?attr/materialButtonOutlinedStyle"/>
-
-    </com.google.android.material.button.MaterialButtonToggleGroup>
-
+        android:layout_height="5dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -114,40 +80,40 @@
 
         <TextView
             android:id="@+id/reminder_task_input_2"
+            android:drawableStart="@drawable/ic_baseline_alarm_24"
+            android:drawableTint="@color/colorPrimary"
+            android:drawablePadding="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="20dp"
+            style="@style/TextAppearance.MaterialComponents.Subtitle1"
+            android:textColor="@color/colorPrimary"
             android:layout_gravity="center"
             android:visibility="gone"
-            android:text="sun, 24/12/24"/>
+            android:text="SUN, 24/12/24"
+            android:padding="5dp"/>
 
-<!--        <com.google.android.material.textfield.TextInputLayout-->
-<!--            android:id="@+id/reminder_task_input_2"-->
-<!--            android:layout_weight="3"-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_gravity="center"-->
-<!--            android:textColorHint="@android:color/black"-->
-<!--            app:startIconDrawable="@drawable/ic_baseline_notes_24"-->
-<!--            android:visibility="visible"-->
-<!--            android:hint="Date Reminder">-->
-
-<!--            <com.google.android.material.textfield.TextInputEditText-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content" />-->
-
-<!--        </com.google.android.material.textfield.TextInputLayout>-->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/reminder_task_input"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:icon="@drawable/ic_baseline_add_alarm_24"
+            android:text="reminder"
+            android:visibility="visible"
+            android:textSize="15dp"/>
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:padding="5dp">
 
-            <Button
-                android:id="@+id/reminder_task_input"
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/edit_reminder_task_input"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Set Reminder"
+                app:icon="@drawable/ic_baseline_add_alarm_24"
+                style="@style/ButtonIconOnly"
+                android:visibility="gone"
                 android:textSize="15dp"/>
 
         </LinearLayout>
@@ -155,19 +121,52 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:padding="5dp">
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/close_reminder_task_input"
                 android:visibility="gone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Delete"
+                app:icon="@drawable/ic_baseline_alarm_off_24"
+                style="@style/ButtonIconOnly"
                 android:textSize="15dp"/>
 
         </LinearLayout>
 
     </LinearLayout>
+
+    <com.google.android.material.button.MaterialButtonToggleGroup
+        android:id="@+id/color_task_group"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:singleSelection="true">
+
+        <Button
+            android:id="@+id/color_task_input1"
+            android:text="pink"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/color1"
+            style="?attr/materialButtonOutlinedStyle"/>
+
+        <Button
+            android:id="@+id/color_task_input2"
+            android:text="hijau"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/color2"
+            style="?attr/materialButtonOutlinedStyle"/>
+
+        <Button
+            android:id="@+id/color_task_input3"
+            android:text="kuning"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/color3"
+            style="?attr/materialButtonOutlinedStyle"/>
+
+    </com.google.android.material.button.MaterialButtonToggleGroup>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -176,7 +175,7 @@
         android:gravity="center"
         android:padding="5dp">
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/add_task"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
