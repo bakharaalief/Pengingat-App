@@ -32,10 +32,10 @@ class DetailFragment : Fragment() {
         )
         title_task_detail.setText(data.titleTask)
         detail_task_detail.setText(data.detailTask)
-        category_task_detail.setText(data.categoryTask)
         reminder_task_detail.visibility = reminderView(data.reminderSet!!)
         reminder_task_detail.setText(reminderTime(data.reminderTask!!))
         date_task_detail.setText(dateFormat(data.dateTask!!.time))
+        category_task_detail.setImageResource(iconView(data.categoryTask!!))
         
     }
 
@@ -95,5 +95,17 @@ class DetailFragment : Fragment() {
         val format = SimpleDateFormat("EEE, dd/MM/yy")
         val date = format.format(reminderInput)
         return date.toString()
+    }
+
+    private fun iconView(categoryInput : String) : Int{
+        var icon = 0
+
+        when(categoryInput){
+            "Pekerjaan" -> icon = R.drawable.ic_work
+            "Liburan" -> icon = R.drawable.ic_popcorn
+            "Olahraga" -> icon = R.drawable.ic_fitness_center_black_24dp
+        }
+
+        return icon
     }
 }

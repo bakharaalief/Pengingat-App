@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:padding="10dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".Create.CreateFragment">
 
@@ -97,6 +98,7 @@
             android:id="@+id/reminder_task_input"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:backgroundTint="@android:color/black"
             app:icon="@drawable/ic_baseline_add_alarm_24"
             android:text="reminder"
             android:visibility="visible"
@@ -112,6 +114,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:icon="@drawable/ic_baseline_add_alarm_24"
+                android:backgroundTint="@android:color/black"
+                app:iconTint="@android:color/white"
                 style="@style/ButtonIconOnly"
                 android:visibility="gone"
                 android:textSize="15dp"/>
@@ -130,6 +134,8 @@
                 android:layout_height="wrap_content"
                 app:icon="@drawable/ic_baseline_alarm_off_24"
                 style="@style/ButtonIconOnly"
+                android:backgroundTint="@android:color/black"
+                app:iconTint="@android:color/white"
                 android:textSize="15dp"/>
 
         </LinearLayout>
@@ -179,6 +185,7 @@
             android:id="@+id/add_task"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:backgroundTint="@android:color/black"
             android:text="Tambahkan"
             android:textSize="15dp"/>
 

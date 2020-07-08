@@ -3,6 +3,7 @@ package com.example.latihan2.Home
 import android.content.Context
 import android.graphics.Paint
 import android.graphics.drawable.Drawable
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,12 +13,14 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.latihan2.R
 import com.example.latihan2.RoomDB.Entity.TaskData
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.item_task.view.*
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
 
-class TaskAdapter(val taskList: List<TaskData>, val viewModel: HomeVM, val context: Context) : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
+class TaskAdapter(val viewModel: HomeVM, val context: Context) : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
+    private var taskList: List<TaskData>? = null
 
     class TaskViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
@@ -41,11 +44,11 @@ class TaskAdapter(val taskList: List<TaskData>, val viewModel: HomeVM, val conte
     }
 
     override fun getItemCount(): Int {
-        return taskList.size
+        return taskList!!.size
     }
 
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
-        val data = taskList[position]
+        val data = taskList!!.get(position)
 
         holder.cardTask.setCardBackgroundColor(
             ContextCompat.getColor(context, colorTask(data.colorTask!!))
@@ -62,21 +65,27 @@ class TaskAdapter(val taskList: List<TaskData>, val viewModel: HomeVM, val conte
         holder.reminderTask.visibility = reminderView(data.reminderSet!!)
         holder.reminderTask.setText(reminderTime(data.reminderTask!!))
         holder.dateTask.setText(dateFormat(data.dateTask!!.time))
-        holder.deleteButton.setOnClickListener {
-            viewModel.deleteTask(data)
+        holder.deleteButton.setOnClickListener { view ->
+            deleteTask(data, view)
+            notifyItemRemoved(position)
+            notifyDataSetChanged()
         }
 
         /*complete button*/
         holder.completeButton.visibility =
             if(data.completeTask!!) View.GONE else View.VISIBLE
         holder.completeButton.setOnClickListener {
-            completeTask(viewModel, data)
+            completeTask(data)
+            notifyItemChanged(position)
+            notifyDataSetChanged()
         }
 
         /*uncomplete button*/
         holder.uncompleteButton.visibility = if(data.completeTask) View.VISIBLE else View.GONE
         holder.uncompleteButton.setOnClickListener {
-            uncompleteTask(viewModel, data)
+            notifyItemChanged(position)
+            uncompleteTask(data)
+            notifyDataSetChanged()
         }
 
         /*striketrough line when task complete*/
@@ -89,19 +98,26 @@ class TaskAdapter(val taskList: List<TaskData>, val viewModel: HomeVM, val conte
         holder.categoryTask.paintFlags =
             if(data.completeTask) holder.titleTask.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
             else holder.titleTask.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
-
-
-
-
     }
 
+    fun taskData(taskListInput : List<TaskData>){
+        taskList = taskListInput
+        notifyDataSetChanged()
+    }
 
-
-    private fun completeTask(viewModel: HomeVM, taskData: TaskData){
+    private fun deleteTask(taskData: TaskData, view: View){
+        val kata = "Yakin ingin menghapus ?"
+        Snackbar.make(view, kata, Snackbar.LENGTH_LONG)
+            .setAction("Ya"){
+                viewModel.deleteTask(taskData)
+            }
+            .show()
+    }
+    private fun completeTask(taskData: TaskData){
         viewModel.updateTaskComplete(taskData.id_task!!, true)
     }
 
-    private fun uncompleteTask(viewModel: HomeVM, taskData: TaskData){
+    private fun uncompleteTask(taskData: TaskData){
         viewModel.updateTaskComplete(taskData.id_task!!, false)
     }
 

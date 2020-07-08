@@ -2,10 +2,8 @@ package com.example.latihan2
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
-import com.example.latihan2.R
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -19,6 +17,22 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(top_appbar)
 
         NavigationUI.setupActionBarWithNavController(this, navController)
+
+        /*change title appbar not use label in nav*/
+        navController.addOnDestinationChangedListener{ controller, destination, arguments ->
+            val appbar = supportActionBar
+
+            title = when(destination.id){
+                R.id.homeFragment -> "Pengingat"
+                R.id.createFragment -> "Create"
+                R.id.detailFragment -> "Detail"
+                else -> "wadidaw"
+            }
+
+            appbar?.title = title
+        }
+
+
     }
 
     override fun onSupportNavigateUp(): Boolean {

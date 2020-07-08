@@ -1,7 +1,11 @@
 package com.example.latihan2.Home
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Parcel
+import android.os.Parcelable
 import android.transition.TransitionManager
 import android.util.Log
 import android.view.*
@@ -16,16 +20,19 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.latihan2.*
+import com.example.latihan2.Create.CreateFragment
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipDrawable
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.category_item.*
 import kotlinx.android.synthetic.main.fragment_home.*
 
 class HomeFragment : Fragment() {
 
-    private lateinit var viewModel : HomeVM
+    private lateinit var viewModel: HomeVM
     private val listTask = ArrayList<String>()
+    private lateinit var adapter: TaskAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,24 +54,24 @@ class HomeFragment : Fragment() {
         /*recylerview trigger*/
         viewModel.listTask.observe(viewLifecycleOwner, Observer { newTask ->
 
-            if(newTask.size == 0){
+            if (newTask.size == 0) {
 
                 list_task.visibility = View.GONE
                 empty_task.visibility = View.VISIBLE
                 chip_category_group.visibility = View.GONE
 
-            }
-
-            else{
+            } else {
 
                 list_task.visibility = View.VISIBLE
                 empty_task.visibility = View.GONE
                 chip_category_group.visibility = View.VISIBLE
 
                 /*recylerview task*/
-                val adapter = TaskAdapter(newTask, viewModel, requireContext())
+                adapter = TaskAdapter(viewModel, requireContext())
+                adapter.taskData(newTask)
                 list_task.layoutManager = LinearLayoutManager(requireContext())
                 list_task.adapter = adapter
+
 
                 //viewModel.categoryTask(newTask)
             }
@@ -74,12 +81,13 @@ class HomeFragment : Fragment() {
                 chip_category_group.removeAllViews()
 
                 /*chip category*/
-                for(data in newCategory){
+                for (data in newCategory) {
                     val chip = Chip(requireContext())
-                    val drawable = ChipDrawable.createFromResource(requireActivity(), R.xml.chip_category)
+                    val drawable =
+                        ChipDrawable.createFromResource(requireActivity(), R.xml.chip_category)
                     chip.setChipDrawable(drawable)
                     chip.text = data
-                    chip.setOnClickListener{
+                    chip.setOnClickListener {
                         Toast.makeText(context, "${data}", Toast.LENGTH_SHORT).show()
                     }
 
@@ -99,21 +107,8 @@ class HomeFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
-        when (item.itemId) {
-
-            //if button click
-            R.id.createFragment -> {
-                true
-            }
-
-            else -> false
-
-        }
-
         return NavigationUI.onNavDestinationSelected(item!!, view!!.findNavController()) ||
                 super.onOptionsItemSelected(item)
+
     }
-
-
-
 }
